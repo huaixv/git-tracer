@@ -15,9 +15,8 @@ GITFLAGS = -q --author='auto-tracer <auto-tracer@saves.me>' --no-verify --allow-
 
 THIS_PATH = $(abspath $(lastword $(MAKEFILE_LIST)))
 WORK_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-WORK_INDEX = $(PROJ_HOME)/.git/index.$(WORK_BRANCH)
-
-LOCK_DIR = $(PROJ_HOME)/.git/
+GIT_DIR = $(PROJ_HOME)/.git/
+WORK_INDEX = $(GIT_DIR)/index.$(WORK_BRANCH)
 
 # prototype: git_soft_checkout(branch)
 define git_soft_checkout
@@ -26,8 +25,8 @@ endef
 
 # prototype: git_commit(msg)
 define git_commit
-	-@flock $(LOCK_DIR) $(MAKE) -C $(PROJ_HOME) -f $(THIS_PATH) .git_commit MSG='$(1)'
-	-@sync $(LOCK_DIR)
+	-@flock $(GIT_DIR) $(MAKE) -C $(PROJ_HOME) -f $(THIS_PATH) .git_commit MSG='$(1)'
+	-@sync $(GIT_DIR)
 endef
 
 .git_commit:
