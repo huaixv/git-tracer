@@ -1,8 +1,14 @@
 ## Usage
 #
-# 1. Include this Makefile in your project Makefile
-# 2. Add `$(call git_commit, "commit message")` to your target
-# 3. Run `make` and take a look at your tracer branch
+# TLDR:
+# 	Run `make -f <path_to_this_makefile>`
+#   and take a look at your 'auto-tracer' branch
+#
+# Long:
+# 	1. Include this Makefile at the end of your project Makefile
+# 	2. Add `$(call git_commit, "commit message")` to your target
+# 	3. Run `make` and your modifications will be traced when your target is run
+#   See also the attached `Makefile` for an example
 
 ## Configuration
 #
@@ -23,6 +29,10 @@ WORK_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 INDEX_LOCK = $(GIT_DIR)/index.lock
 CURR_INDEX = $(GIT_DIR)/index
 WORK_INDEX = $(GIT_DIR)/index-$(WORK_BRANCH)
+
+# Default target of this Makefile
+trace:
+	$(call git_commit, "tracer called")
 
 # prototype: git_soft_checkout(branch)
 define git_soft_checkout
@@ -49,4 +59,4 @@ endef
 .clean_index:
 	rm -f $(WORK_INDEX)
 
-.PHONY: .git_commit .clean_index
+.PHONY: .git_commit .clean_index trace
