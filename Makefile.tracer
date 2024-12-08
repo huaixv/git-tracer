@@ -6,16 +6,19 @@
 
 ## Configuration
 #
-# PROJ_HOME is set to the dir of this Makefile by default, modify this if necessary
-PROJ_HOME = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # TRACER_BRANCH will be the branch name, change it to any name you like :)
 TRACER_BRANCH = auto-tracer
 # GITFLAGS is the flags for git commit, without commit message
 GITFLAGS = -q --author='auto-tracer <auto-tracer@saves.me>' --no-verify --allow-empty
 
 THIS_PATH = $(abspath $(lastword $(MAKEFILE_LIST)))
+
+# PROJ_HOME defaluts to the toplevel dir of current Git repo, which will be $PWD of following `git` runs
+PROJ_HOME = $(abspath $(shell git rev-parse --show-toplevel))
+# GIT_DIR is the `.git` dir of current Git repo, this should work fine with submodules
+GIT_DIR   = $(abspath $(shell git rev-parse --git-dir))
+
 WORK_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-GIT_DIR = $(PROJ_HOME)/.git/
 
 INDEX_LOCK = $(GIT_DIR)/index.lock
 CURR_INDEX = $(GIT_DIR)/index
