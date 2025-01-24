@@ -36,6 +36,9 @@ WORK_INDEX = $(GIT_DIR)/index-$(WORK_BRANCH)
 trace:
 	$(call git_commit, "tracer called")
 
+push:
+	git -C $(PROJ_HOME) push origin $(TRACER_BRANCH)
+
 # prototype: git_soft_checkout(branch)
 define git_soft_checkout
 	git checkout --detach -q && git reset --soft $(1) -q -- && git checkout $(1) -q --
